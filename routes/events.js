@@ -10,10 +10,10 @@ const knex = require('../db/knex.js')
 ///////// Routes /////////
 router.get('/', showAllEvents)
 router.get('/:id', showSpecificEvent)
+router.get('/:id/register')
 
 
 ///////// Routing Functions /////////
-
 function showAllEvents(req,res,next){
   return knex('events')
     .then((events) => {
@@ -38,9 +38,9 @@ function showSpecificEvent(req,res,next){
     })
 }
 
-
-
-
+function registerForEvent(req,res,next){
+  const id = req.params.id
+}
 
 
 
