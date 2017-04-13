@@ -1,13 +1,16 @@
 
 exports.seed = function(knex, Promise) {
-  // Deletes ALL existing entries
-  return knex('table_name').del()
+  return knex('tickets').del()
     .then(function () {
-      // Inserts seed entries
-      return knex('table_name').insert([
-        {id: 1, colName: 'rowValue1'},
-        {id: 2, colName: 'rowValue2'},
-        {id: 3, colName: 'rowValue3'}
-      ]);
-    });
+      return knex('tickets').insert([
+        {id: 1, events_id: 1, name: 'General Admission', price: 42},
+        {id: 2, events_id: 1, name: 'General Admission', price: 52},
+        {id: 3, events_id: 2, name: 'VIP', price: 1000000000},
+      ])
+    })
+    .then(() => {
+      return knex.raw(
+        "SELECT setval('tickets_id_seq', (SELECT MAX(id) FROM tickets));"
+      )
+    })
 };

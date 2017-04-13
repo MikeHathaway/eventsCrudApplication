@@ -2,7 +2,7 @@
 exports.up = function(knex) {
   return knex.schema.createTable('events', (table) => {
     table.increments('id')
-    table.foreign('venues_id').unsigned().references('id').inTable('venues')
+    table.integer('venues_id').notNullable()
     table.string('title',255).notNullable()
     table.string('description',255).notNullable()
     table.boolean('over_21').notNullable()
