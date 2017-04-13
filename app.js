@@ -3,10 +3,11 @@ const path = require('path');
 const favicon = require('serve-favicon');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
+const methodOverride = require('method-override')
 const hbs = require('hbs')
+const pg = require('pg')
 
 const index = require('./routes/index');
-const users = require('./routes/users');
 
 const app = express();
 
@@ -19,11 +20,12 @@ app.set('view engine', 'hbs');
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(methodOverride('_method'))
+
+hbs.registerPartials(path.join(__dirname, '/views/partials'))
 
 app.use('/', index);
-app.use('/users', users);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
