@@ -5,7 +5,7 @@
     <title></title>
   </head>
   <body>
-    {{#each events}}
+    {{#each attendees}}
       <h1>{{this.title}}</h1>
       <ul>
         <li>{{this.description}}</li>
@@ -13,7 +13,6 @@
         <li>{{this.end_datetime}}</li>
         <p>Over 21? <em>{{this.over_21}}</em></p>
       </ul>
-      <a href="events/{{this.id}}"><h3>Register For Event</h3></a>
     {{/each}}
 
   </body>
