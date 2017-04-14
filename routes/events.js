@@ -11,7 +11,11 @@ const knex = require('../db/knex.js')
 router.get('/', showAllEvents)
 router.get('/:id', showSpecificEvent)
 
+router.get('/:id/attendees', viewEventAttendees)
+
 router.get('/:id/register', viewEventRegistration)
+router.post('/:id/register',registerAttendee)
+
 
 ///////// Routing Functions /////////
 function showAllEvents(req,res,next){
@@ -24,25 +28,52 @@ function showSpecificEvent(req,res,next){
   const id = req.params.id
   return knex('events')
     .where({id}).first()
-    .then((event) => {
-      res.render('events/individualEvent', {event})
-    })
+    .then((event) => res.render('events/individualEvent', {event}))
     .catch((err) => next(err))
 }
 
 function viewEventRegistration(req,res,next){
   const id = req.params.id
 
-  knex('tickets')
+  return knex('tickets')
     .then((tickets) => {
-      res.render('events/eventRegistration',
-      {tickets: getUniqueTicketTypes(tickets)})
+      res.render('events/eventRegistration',{
+        tickets: getUniqueTicketTypes(tickets)
+      })
     })
     .catch((err) => next(err))
 }
 
-function viewAttendees(req,res,next){
 
+function viewEventAttendees(req,res,next){
+  const id = req.params.id
+  return knex.select('*')
+    .from('events')
+    .then((event) => {
+      knex.select('*')
+        .from('attendees')
+        .where({id})
+        .then((attendee) => {
+          console.log(attendee)
+          res.render('attendees', {
+            attendee: attendee,
+            event: event
+          })
+        })
+    })
+}
+
+
+
+function registerAttendee(req,res,next){
+  const newAttendeeData = req.body
+
+  return knex
+    .from('attendees')
+    .insert(newAttendeeData)
+    .then()
+
+    .catch((err) => next(err))
 }
 
 
