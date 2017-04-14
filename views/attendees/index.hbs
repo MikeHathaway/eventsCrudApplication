@@ -5,12 +5,11 @@
     <title></title>
   </head>
   <body>
-    {{#each attendees}}
-      <h1>{{this.title}}</h1>
+    {{#each attendee}}
+      <h1>{{this.preferred_name}}</h1>
       <ul>
-        <li>{{this.description}}</li>
-        <li>{{this.start_datetime}}</li>
-        <li>{{this.end_datetime}}</li>
+        <li>{{this.birthday}}</li>
+        <li>{{this.email}}</li>
         <p>Over 21? <em>{{this.over_21}}</em></p>
       </ul>
     {{/each}}

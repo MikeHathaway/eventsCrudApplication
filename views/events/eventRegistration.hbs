@@ -5,7 +5,7 @@
     <title></title>
   </head>
   <body>
-    <form>
+    <form action="/events/{{event.id}}/register" method="POST">
       <label for="preferred_name">Preferred Name</label>
       <input id="preferred_name" class="form-control" type="text" value="{{attendee.preferred_name}}">
 
@@ -20,8 +20,8 @@
 
       <label for="tickets">Tickets</label>
       <select id="tickets">
-        {{#each ticketTypes}}
-          <option value="{{this.name}} - ${this.price}">{{this.name}} {{this.price}}</option>
+        {{#each tickets}}
+          <option value="{{this.name}}: ${{this.price}}">{{this.name}} {{this.price}}</option>
         {{/each}}
       </select>
 

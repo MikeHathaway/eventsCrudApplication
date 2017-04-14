@@ -10,20 +10,14 @@ const knex = require('../db/knex.js')
 ///////// Routes /////////
 router.get('/', showAllEvents)
 router.get('/:id', showSpecificEvent)
-router.get('/:id/register',viewEventRegistration)
 
-router.post('/:id/register',registerForEvent)
+router.get('/:id/register', viewEventRegistration)
 
 ///////// Routing Functions /////////
 function showAllEvents(req,res,next){
   return knex('events')
-    .then((events) => {
-      res.render('events/events', {events})
-    })
-    .catch((err) => {
-      console.error(err)
-      next(err)
-    })
+    .then((events) => res.render('events/events', {events}))
+    .catch((err) => next(err))
 }
 
 function showSpecificEvent(req,res,next){
@@ -33,46 +27,29 @@ function showSpecificEvent(req,res,next){
     .then((event) => {
       res.render('events/individualEvent', {event})
     })
-    .catch((err) => {
-      console.error(err)
-      next(err)
-    })
+    .catch((err) => next(err))
 }
 
 function viewEventRegistration(req,res,next){
   const id = req.params.id
-  let eventToRegister
-  let ticketTypes
-
-  knex('events')
-    .where({id})
-    .then((event) => {
-      eventToRegister = event
-    })
 
   knex('tickets')
     .then((tickets) => {
-      ticketTypes = getUniqueTicketTypes(tickets)
+      res.render('events/eventRegistration',
+      {tickets: getUniqueTicketTypes(tickets)})
     })
-    .then(() => {
-      res.render('events/eventRegistration', {
-        event: eventToRegister,
-        ticketTypes: ticketTypes
-      })
-    })
-    .catch((err) => {
-      console.error(err)
-      next(err)
-    })
+    .catch((err) => next(err))
+}
+
+function viewAttendees(req,res,next){
+
 }
 
 
-function registerForEvent(req,res,next){
-
-}
 
 
 ///////// Utility Functions /////////
+  //this function is broken
 function getUniqueTicketTypes(tickets){
   const ticketTypes = []
 
@@ -81,7 +58,6 @@ function getUniqueTicketTypes(tickets){
     if(Object.values(newObj).indexOf(ticket.name) === -1){
       newObj['price'] = ticket.price
       newObj['name'] = ticket.name
-      console.log('h,mm')
       ticketTypes.push(newObj)
     }
   })

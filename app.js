@@ -9,6 +9,8 @@ const pg = require('pg')
 
 const index = require('./routes/index')
 const events = require('./routes/events')
+const attendees = require('./routes/attendees')
+
 
 
 const app = express()
@@ -29,6 +31,7 @@ hbs.registerPartials(path.join(__dirname, '/views/partials'))
 
 app.use('/', index)
 app.use('/events', events)
+app.use('/attendees', attendees)
 
 
 // catch 404 and forward to error handler
