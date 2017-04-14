@@ -6,14 +6,14 @@
   </head>
   <body>
     {{#each venue}}
-      <h1>{{this.title}}</h1>
+      <h1>{{this.name}}</h1>
+      <p>{{this.capacity}}</p>
       <ul>
-        <li>{{this.description}}</li>
-        <li>{{this.start_datetime}}</li>
-        <li>{{this.end_datetime}}</li>
-        <p>Over 21? <em>{{this.over_21}}</em></p>
+        <li>{{this.line_1}}</li>
+        <li>{{this.city}}</li>
+        <li>{{this.state}}</li>
       </ul>
+      <a href="/venues/{{this.id}}"><p>See Events Here</p></a>
     {{/each}}
-
   </body>
 </html>

@@ -16,7 +16,7 @@ exports.seed = function(knex, Promise) {
         {
           id: 2,
           name: 'Mount Rushmore',
-          capacity: 10000,
+          capacity: 5500,
           line_1: 'Black Hills National Forest',
           line_2: '13000 SD-244',
           city: 'Keystone',
