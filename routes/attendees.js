@@ -27,6 +27,20 @@ function showSpecificAttendee(req,res,next){
     .catch((err) => next(err))
 }
 
+//adding the join to the events being attended
+//
+// function showSpecificAttendee(req,res,next){
+//   const id = req.params.id
+//
+//   return knex.select('attendee.id, attendee.preferred_name, attendee.email, ticket_id,')
+//     .from()
+//     .where({id}).first()
+//     .then((attendee) => res.render('attendees/individualAttendee',{attendee}))
+//     .catch((err) => next(err))
+// }
+
+
+
 
 
 module.exports = router

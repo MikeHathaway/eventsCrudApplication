@@ -37,8 +37,9 @@ function viewEventRegistration(req,res,next){
 
   return knex('tickets')
     .then((tickets) => {
-      res.render('events/eventRegistration',{
-        tickets: getUniqueTicketTypes(tickets)
+      res.render('events/eventRegistration', {
+        tickets: tickets, //getUniqueTicketTypes(tickets)
+        event: {id}
       })
     })
     .catch((err) => next(err))
@@ -61,18 +62,29 @@ function viewEventAttendees(req,res,next){
           })
         })
     })
+    .catch((err) => next(err))
 }
 
 
 
 function registerAttendee(req,res,next){
-  const newAttendeeData = req.body
+  const {birthday,email,last_name, preferred_name} = req.body
+  const newAttendee = {birthday,email,last_name, preferred_name}
+  const ticket_id = parseInt(req.body.id)
+  console.log(req.body)
 
-  return knex
-    .from('attendees')
-    .insert(newAttendeeData)
-    .then()
-
+  return knex('attendees')
+    .where({ email: newAttendee.email })
+      .then((attendees) => {
+        return !attendees[0] ? knex('attendees').insert(newAttendee) : attendees
+      })
+      .then(([attendee]) => {
+        return knex('attendee_tickets').insert({ticket_id: ticket_id, attendee_id: attendee.id})
+      })
+      .then((attendee) => {
+        attendee = attendee.length > 0 ? attendee : newAttendee
+        return res.render('attendees/individualAttendee',{attendee})
+      })
     .catch((err) => next(err))
 }
 
@@ -92,7 +104,6 @@ function getUniqueTicketTypes(tickets){
       ticketTypes.push(newObj)
     }
   })
-  console.log(ticketTypes)
   return ticketTypes
 }
 
