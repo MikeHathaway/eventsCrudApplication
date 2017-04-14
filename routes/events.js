@@ -46,16 +46,17 @@ function viewEventRegistration(req,res,next){
 }
 
 
+//this function is the opposiite function of what was being looked for 
 function viewEventAttendees(req,res,next){
   const id = req.params.id
   return knex.select('*')
     .from('events')
+    .where({id})
     .then((event) => {
       knex.select('*')
         .from('attendees')
         .where({id})
         .then((attendee) => {
-          console.log(attendee)
           res.render('attendees', {
             attendee: attendee,
             event: event
@@ -83,7 +84,7 @@ function registerAttendee(req,res,next){
       })
       .then((attendee) => {
         attendee = attendee.length > 0 ? attendee : newAttendee
-        return res.render('attendees/individualAttendee',{attendee})
+        return res.render('attendees/newAttendee',{attendee})
       })
     .catch((err) => next(err))
 }
