@@ -8,6 +8,10 @@ const knex = require('../db/knex.js')
 
 ///////// Routes /////////
 router.get('/', showAllEvents)
+
+router.get('/new', showEventRegistration)
+router.post('/new', registerEvent)
+
 router.get('/:id', showSpecificEvent)
 
 router.get('/:id/attendees', viewEventAttendees)
@@ -20,6 +24,18 @@ router.post('/:id/register',registerAttendee)
 function showAllEvents(req,res,next){
   return knex('events')
     .then((events) => res.render('events/events', {events}))
+    .catch((err) => next(err))
+}
+
+function showEventRegistration(req,res,next){
+  res.render('events/new',{hey:'hey'})
+}
+
+function registerEvent(req,res,next){
+  const newEvent = req.body
+  return knex('events')
+    .insert(newEvent)
+    .then((event) => res.render('events/individualEvent', {event}))
     .catch((err) => next(err))
 }
 

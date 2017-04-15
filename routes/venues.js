@@ -37,15 +37,17 @@ function showVenueEvents(req,res,next){
 
 ///////// Utility Functions /////////
 function sortVenuesByStart(venue){
-  return venue.sort((a,b) => {
-    if(a.start_datetime < b.start_datetime){
-      return -1
-    }
-    else if(a.start_datetime > b.start_datetime){
-      return 1
-    }
-    return 0
-  })
+  return venue.sort(sortCriterion)
+}
+
+function sortCriterion(a,b){
+  if(a.start_datetime < b.start_datetime){
+    return -1
+  }
+  else if(a.start_datetime > b.start_datetime){
+    return 1
+  }
+  return 0
 }
 
 
