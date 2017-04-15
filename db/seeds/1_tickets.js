@@ -4,8 +4,8 @@ exports.seed = function(knex, Promise) {
     .then(function () {
       return knex('tickets').insert([
         {id: 1, events_id: 1, name: 'General Admission', price: 42},
-        {id: 2, events_id: 1, name: 'General Admission', price: 42},
-        {id: 3, events_id: 2, name: 'VIP', price: 1000000000},
+        {id: 2, events_id: 2, name: 'General Admission', price: 52},
+        {id: 3, events_id: 3, name: 'VIP', price: 1000000000},
       ])
     })
     .then(() => {

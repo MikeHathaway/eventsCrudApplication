@@ -5,7 +5,6 @@ const express = require('express')
 const router = express.Router()
 const knex = require('../db/knex.js')
 
-//http://stackoverflow.com/questions/39631240/query-multiple-tables-with-knex-js
 
 ///////// Routes /////////
 router.get('/', showAllEvents)
@@ -34,12 +33,13 @@ function showSpecificEvent(req,res,next){
 
 function viewEventRegistration(req,res,next){
   const id = req.params.id
-  return knex('tickets')
-    .then((tickets) => {
-      res.render('events/eventRegistration', {
-        tickets: tickets, //getUniqueTicketTypes(tickets)
-        event: {id}
-      })
+  return knex.select('tickets.name', 'tickets.price', 'events.id', 'events.title', 'events.description', 'events.over_21', 'venues.line_1', 'venues.city', 'venues.state', 'venues.zip')
+    .from('tickets')
+    .innerJoin('events', 'tickets.events_id', 'events.id')
+    .innerJoin('venues', 'events.venues_id', 'venues.id')
+    .where('events.id',id).first()
+    .then((event) => {
+      res.render('events/eventRegistration',{event})
     })
     .catch((err) => next(err))
 }
