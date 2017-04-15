@@ -27,15 +27,25 @@ function showVenueEvents(req,res,next){
     .innerJoin('events','venues.id','events.venues_id')
     .where('venues.id', id)
     .then((venue) => {
-      console.log(venue)
-      res.render('venues/venueEvents', {venue}) //need to sort venueEvents by start_datetime
+      const sortedVenue = sortVenuesByStart(venue)
+      venue = sortedVenue
+      res.render('venues/venueEvents', {venue})
     })
+    .catch((err) => next(err))
 }
 
 
 ///////// Utility Functions /////////
 function sortVenuesByStart(venue){
-
+  return venue.sort((a,b) => {
+    if(a.start_datetime < b.start_datetime){
+      return -1
+    }
+    else if(a.start_datetime > b.start_datetime){
+      return 1
+    }
+    return 0
+  })
 }
 
 

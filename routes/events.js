@@ -34,7 +34,6 @@ function showSpecificEvent(req,res,next){
 
 function viewEventRegistration(req,res,next){
   const id = req.params.id
-
   return knex('tickets')
     .then((tickets) => {
       res.render('events/eventRegistration', {
@@ -46,7 +45,7 @@ function viewEventRegistration(req,res,next){
 }
 
 
-//this function is the opposiite function of what was being looked for 
+//this function is the opposiite function of what was being looked for
 function viewEventAttendees(req,res,next){
   const id = req.params.id
   return knex.select('*')
@@ -72,7 +71,7 @@ function registerAttendee(req,res,next){
   const {birthday,email,last_name, preferred_name} = req.body
   const newAttendee = {birthday,email,last_name, preferred_name}
   const ticket_id = parseInt(req.body.id)
-  console.log(req.body)
+  const error = {message: 'You must be over 21 to attended this event.'}
 
   return knex('attendees')
     .where({ email: newAttendee.email })
@@ -80,11 +79,14 @@ function registerAttendee(req,res,next){
         return !attendees[0] ? knex('attendees').insert(newAttendee) : attendees
       })
       .then(([attendee]) => {
+        console.log('error here?')
         return knex('attendee_tickets').insert({ticket_id: ticket_id, attendee_id: attendee.id})
       })
       .then((attendee) => {
+        console.log('ABOVE',attendee, attendeeOver21(attendee))
         attendee = attendee.length > 0 ? attendee : newAttendee
-        return res.render('attendees/newAttendee',{attendee})
+        console.log(attendee, attendeeOver21(attendee))
+        return attendeeOver21(attendee) ? res.render('attendees/newAttendee',{attendee}) : res.render('events/eventRegistration',{error})
       })
     .catch((err) => next(err))
 }
@@ -93,6 +95,15 @@ function registerAttendee(req,res,next){
 
 
 ///////// Utility Functions /////////
+function attendeeOver21(attendeeInfo){
+  const birthYear = parseInt(attendeeInfo.birthday.split('').slice(0,5).join(''))
+  const currentYear = new Date().getFullYear()
+  return (currentYear - birthYear < 21) ? false : true
+}
+
+
+
+
   //this function is broken
 function getUniqueTicketTypes(tickets){
   const ticketTypes = []

@@ -19,8 +19,6 @@ function showAllAttendees(req,res,next){
     .catch((err) => next(err))
 }
 
-
-//adding the join to the events being attended
 function showSpecificAttendee(req,res,next){
   const id = parseInt(req.params.id)
 
@@ -35,8 +33,6 @@ function showSpecificAttendee(req,res,next){
     })
     .catch((err) => next(err))
 }
-
-
 
 
 
