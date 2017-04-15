@@ -25,22 +25,16 @@ function showAllEvents(req,res,next){
 
 function showSpecificEvent(req,res,next){
   const id = req.params.id
-  return knex('events')
-    .where({id}).first()
+  return retreiveEventInformation(id)
     .then((event) => res.render('events/individualEvent', {event}))
     .catch((err) => next(err))
+
 }
 
 function viewEventRegistration(req,res,next){
   const id = req.params.id
-  return knex.select('tickets.name', 'tickets.price', 'events.id', 'events.title', 'events.description', 'events.over_21', 'venues.line_1', 'venues.city', 'venues.state', 'venues.zip')
-    .from('tickets')
-    .innerJoin('events', 'tickets.events_id', 'events.id')
-    .innerJoin('venues', 'events.venues_id', 'venues.id')
-    .where('events.id',id).first()
-    .then((event) => {
-      res.render('events/eventRegistration',{event})
-    })
+  return retreiveEventInformation(id)
+    .then((event) => res.render('events/eventRegistration',{event}))
     .catch((err) => next(err))
 }
 
@@ -95,6 +89,14 @@ function registerAttendee(req,res,next){
 
 
 ///////// Utility Functions /////////
+function retreiveEventInformation(id){
+  return knex.select('tickets.name', 'tickets.price', 'events.id', 'events.title', 'events.description', 'events.start_datetime', 'events.end_datetime', 'events.over_21', 'venues.line_1', 'venues.city', 'venues.state', 'venues.zip')
+    .from('tickets')
+    .innerJoin('events', 'tickets.events_id', 'events.id')
+    .innerJoin('venues', 'events.venues_id', 'venues.id')
+    .where('events.id',id).first()
+}
+
 function attendeeOver21(attendeeInfo){
   const birthYear = parseInt(attendeeInfo.birthday.split('').slice(0,5).join(''))
   const currentYear = new Date().getFullYear()

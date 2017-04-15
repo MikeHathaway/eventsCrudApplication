@@ -6,11 +6,11 @@
   </head>
   <body>
     <h1>{{event.title}}</h1>
+    <p>{{event.description}}</p>
     <ul>
-      <li>{{event.description}}</li>
       <li>{{event.start_datetime}}</li>
       <li>{{event.end_datetime}}</li>
-      <p>Over 21? <em>{{event.over_21}}</em></p>
+      <p>Over 21: <strong>{{event.over_21}}</strong></p>
     </ul>
     <p><a href="/events/{{event.id}}/attendees">See Event Attendees</a></p>
   </body>
