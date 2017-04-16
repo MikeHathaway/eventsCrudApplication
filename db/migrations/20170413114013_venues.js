@@ -2,7 +2,7 @@
 exports.up = function(knex) {
   return knex.schema.createTable('venues', (table) => {
     table.increments('id')
-    table.string('name',255).notNullable()
+    table.string('venue_name',255).notNullable()
     table.integer('capacity').notNullable()
     table.string('line_1',255).notNullable()
     table.string('line_2',255).notNullable()

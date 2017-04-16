@@ -5,6 +5,38 @@
     <title></title>
   </head>
   <body>
-    <h1>Add an event!!</h1>
+    <h1>Register your event</h1>
+    <section>
+      <form action="/events/new" method="POST">
+        <label for="title">Event Title</label>
+        <input id="title" class="form-control" type="text" name="title" required>
+
+        <label for="description">Event Description</label>
+        <input id="description" class="form-control" type="text" name="description" required>
+
+        <label for="over_21">Over 21 </label>
+        <input id="over_21" class="form-control" type="checkbox" name="over_21" required>
+
+        <label for="start_datetime">Begins</label>
+        <input id="start_datetime" class="form-control" type="Date" name="start_datetime" required>
+
+        <label for="end_datetime">Ends</label>
+        <input id="end_datetime" class="form-control" type="date" name="end_datetime" required>
+
+        <label for="name">Event Description</label>
+        <input id="name" class="form-control" type="text" name="name" required>
+
+        <label for="price">Event Description</label>
+        <input id="price" class="form-control" type="text" name="price" required>
+
+        <label for="">Tickets</label>
+        <select id="tickets" name="id">
+          <!-- {{#each event}}
+            <option value="{{this.id}}">{{this.name}}: ${{this.price}}</option>
+          {{/each}} -->
+        </select>
+        <button type="submit" class="btn btn-default">Register</button>
+      </form>
+    </section>
   </body>
 </html>

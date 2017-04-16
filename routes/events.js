@@ -106,7 +106,7 @@ function registerAttendee(req,res,next){
 
 ///////// Utility Functions /////////
 function retreiveEventInformation(id){
-  return knex.select('tickets.name', 'tickets.price', 'events.id', 'events.title', 'events.description', 'events.start_datetime', 'events.end_datetime', 'events.over_21', 'venues.line_1', 'venues.city', 'venues.state', 'venues.zip')
+  return knex.select('tickets.name', 'tickets.price', 'events.id', 'events.title', 'events.description', 'events.start_datetime', 'events.end_datetime', 'events.over_21', 'venues.venue_name', 'venues.line_1', 'venues.city', 'venues.state', 'venues.zip')
     .from('tickets')
     .innerJoin('events', 'tickets.events_id', 'events.id')
     .innerJoin('venues', 'events.venues_id', 'venues.id')
@@ -120,9 +120,6 @@ function attendeeOver21(attendeeInfo){
 }
 
 
-
-
-  //this function is broken
 function getUniqueTicketTypes(tickets){
   const ticketTypes = []
 

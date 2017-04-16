@@ -5,7 +5,7 @@ exports.seed = function(knex, Promise) {
       return knex('venues').insert([
         {
           id: 1,
-          name: 'TOWER OF DOOM',
+          venue_name: 'TOWER OF DOOM',
           capacity: 1000,
           line_1: '123 FAKER Street',
           line_2: 'APARTMENT 69',
@@ -15,7 +15,7 @@ exports.seed = function(knex, Promise) {
         },
         {
           id: 2,
-          name: 'Mount Rushmore',
+          venue_name: 'Mount Rushmore',
           capacity: 5500,
           line_1: 'Black Hills National Forest',
           line_2: '13000 SD-244',

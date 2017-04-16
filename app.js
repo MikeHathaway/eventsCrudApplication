@@ -6,6 +6,7 @@ const bodyParser = require('body-parser')
 const methodOverride = require('method-override')
 const hbs = require('hbs')
 const pg = require('pg')
+const dotenv = require('dotenv').config()
 
 const index = require('./routes/index')
 const events = require('./routes/events')

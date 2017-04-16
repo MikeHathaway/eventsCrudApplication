@@ -22,7 +22,7 @@ function showAllVenues(req,res,next){
 function showVenueEvents(req,res,next){
   const id = req.params.id
 
-  return knex.select('venues.name', 'events.start_datetime', 'events.end_datetime', 'events.title', 'events.id')
+  return knex.select('venues.venue_name', 'events.start_datetime', 'events.end_datetime', 'events.title', 'events.id')
     .from('venues')
     .innerJoin('events','venues.id','events.venues_id')
     .where('venues.id', id)
