@@ -4,32 +4,50 @@
     <style>
        #map {
         height: 400px;
-        width: 100%;
+        width: 35%;
        }
     </style>
   </head>
   <body>
     <h3>Event Location</h3>
     <div id="map"></div>
+      {{event.line_1}}
+      {{event.city}}
+      {{event.state}}
+      <div id="zip">{{event.zip}}</div>
+
     <script>
       function initMap() {
-        console.log('in da funky function')
-        var uluru = {lat: -25.363, lng: 131.044};
-        var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 4,
-          center: uluru
-        });
-        var marker = new google.maps.Marker({
-          position: uluru,
-          map: map
-        });
+        const geocoder = new google.maps.Geocoder()
+        const zip = {{event.zip}}
+        const zipCode = zip.toString()
+
+        geocoder.geocode({'address': zipCode}, (results, status) => {
+          if (status == google.maps.GeocoderStatus.OK) {
+
+            const map = new google.maps.Map(document.getElementById('map'), {
+              zoom: 4,
+              center: results[0].geometry.location
+            })
+            const marker = new google.maps.Marker({
+              position: results[0].geometry.location,
+              map: map
+            })
+          }
+          else {
+            alert("Geocode was not successful for the following reason: " + status)
+          }
+        })
       }
+
     </script>
     <script async defer
-    src=`https://maps.googleapis.com/maps/api/js?key=${process.env.GM_API_KEY}&callback=initMap`>
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBYSCA3Z4clOMcJ9p88HovJCEkll-Lv7uU&callback=initMap">
     </script>
   </body>
 </html>
 
 
 <!-- https://developers.google.com/maps/documentation/javascript/adding-a-google-map -->
+<!-- https://developers.google.com/maps/documentation/geocoding/intro -->
+<!-- https://developers.google.com/maps/documentation/javascript/examples/geocoding-simple -->

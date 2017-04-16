@@ -6,12 +6,10 @@
   </head>
   <body>
     <h1>{{event.title}}</h1>
-    <p>{{event.description}}</p>
-    <ul>
-      <li>{{event.start_datetime}}</li>
-      <li>{{event.end_datetime}}</li>
-      <p>Over 21: <strong>{{event.over_21}}</strong></p>
-    </ul>
+    <h3>{{event.description}}</h3>
+    <p>Starting: {{event.start_datetime}}</p>
+    <p>Ending: {{event.end_datetime}}</p>
+    <p>Over 21: <strong>{{event.over_21}}</strong></p>
     {{> googleMap}}
     <p><a href="/events/{{event.id}}/attendees">See Event Attendees</a></p>
   </body>
