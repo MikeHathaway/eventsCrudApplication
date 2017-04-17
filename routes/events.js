@@ -74,28 +74,34 @@ function viewEventAttendees(req,res,next){
 }
 
 
-
+//tickedID is currently broken
 function registerAttendee(req,res,next){
   const {birthday,email,last_name, preferred_name} = req.body
   const newAttendee = {birthday,email,last_name, preferred_name}
   const ticket_id = 2//parseInt(req.body.id)
+  const eventID = parseInt(req.params.id)
   const error = {message: 'You must be over 21 to attended this event.'}
 
   return knex('attendees')
     .where({ email: newAttendee.email })
       .then((attendees) => {
-        console.log('!',attendees)
         return !attendees[0] ? knex('attendees').insert(newAttendee) : attendees
       })
       .then(([attendee]) => {
-        console.log('error here?')
         return knex('attendee_tickets').insert({ticket_id: ticket_id, attendee_id: attendee.id})
       })
       .then((attendee) => {
-        // console.log('ABOVE',attendee, attendeeOver21(attendee))
         attendee = attendee.length > 0 ? attendee : newAttendee
-        console.log(attendee, attendeeOver21(attendee))
-        return attendeeOver21(attendee) ? res.render('attendees/newAttendee',{attendee}) : res.render('events/eventRegistration',{error})
+
+        return knex.select('events.over_21','events.id')
+          .from('events')
+          .where('events.id',eventID)
+          .then((event) => {
+            if(event.over_21){
+              return attendeeOver21(attendee) ? res.render('attendees/newAttendee',{attendee}) : res.render('events/eventRegistration',{error})
+            }
+            return res.render('attendees/newAttendee',{attendee})
+          })
       })
     .catch((err) => next(err))
 }
@@ -116,7 +122,6 @@ function retreivalCriterion(){
 }
 
 function attendeeOver21(attendeeInfo){
-  console.log(attendeeInfo)
   const birthYear = parseInt(attendeeInfo.birthday.split('').slice(0,5).join(''))
   const currentYear = new Date().getFullYear()
   return (currentYear - birthYear < 21) ? false : true

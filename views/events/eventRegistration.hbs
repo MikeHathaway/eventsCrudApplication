@@ -43,9 +43,10 @@
             <div class="col-md-3">
               <label for="tickets">Tickets</label>
               <select id="tickets" name="id">
-                {{#each event}}
+                <option value="{{event.id}}">{{this.name}}: ${{this.price}}</option>
+                <!-- {{#each event}}
                   <option value="{{this.id}}">{{this.name}}: ${{this.price}}</option>
-                {{/each}}
+                {{/each}} -->
               </select>
             </div>
             <div class="col-md-3">
