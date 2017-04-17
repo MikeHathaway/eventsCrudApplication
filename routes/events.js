@@ -28,14 +28,26 @@ function showAllEvents(req,res,next){
 }
 
 function showEventRegistration(req,res,next){
-  res.render('events/new',{hey:'hey'})
+  res.render('events/new')
 }
 
 function registerEvent(req,res,next){
-  const newEvent = req.body
+  const {title,description,over_21,start_datetime,end_datetime} = req.body
+  const {price,name} = req.body
+  const newEvent = {title,description,over_21,start_datetime,end_datetime}
+  const newTicket = {price,name}
+
+  console.log(title,price)
+
   return knex('events')
     .insert(newEvent)
-    .then((event) => res.render('events/individualEvent', {event}))
+    .then((event) => {
+      return knex('tickets')
+        .insert(newTicket)
+        .then((ticket) => {
+          res.render('events/individualEvent', {event})
+        })
+    })
     .catch((err) => next(err))
 }
 
@@ -74,11 +86,11 @@ function viewEventAttendees(req,res,next){
 }
 
 
-//tickedID is currently broken
+//ticketID is currently broken
 function registerAttendee(req,res,next){
   const {birthday,email,last_name, preferred_name} = req.body
   const newAttendee = {birthday,email,last_name, preferred_name}
-  const ticket_id = 2//parseInt(req.body.id)
+  const ticket_id = 2 //parseInt(req.body.id)
   const eventID = parseInt(req.params.id)
   const error = {message: 'You must be over 21 to attended this event.'}
 
