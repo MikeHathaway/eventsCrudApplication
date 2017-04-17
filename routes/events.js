@@ -22,8 +22,8 @@ router.post('/:id/register',registerAttendee)
 
 ///////// Routing Functions /////////
 function showAllEvents(req,res,next){
-  return knex('events')
-    .then((events) => res.render('events/events', {events}))
+  return retreiveEventInformation()
+    .then((events) => res.render('events', {events}))
     .catch((err) => next(err))
 }
 
@@ -54,8 +54,6 @@ function viewEventRegistration(req,res,next){
     .catch((err) => next(err))
 }
 
-
-//this function is the opposiite function of what was being looked for
 function viewEventAttendees(req,res,next){
   const id = req.params.id
   return knex.select('*')
@@ -80,12 +78,13 @@ function viewEventAttendees(req,res,next){
 function registerAttendee(req,res,next){
   const {birthday,email,last_name, preferred_name} = req.body
   const newAttendee = {birthday,email,last_name, preferred_name}
-  const ticket_id = parseInt(req.body.id)
+  const ticket_id = 2//parseInt(req.body.id)
   const error = {message: 'You must be over 21 to attended this event.'}
 
   return knex('attendees')
     .where({ email: newAttendee.email })
       .then((attendees) => {
+        console.log('!',attendees)
         return !attendees[0] ? knex('attendees').insert(newAttendee) : attendees
       })
       .then(([attendee]) => {
@@ -93,7 +92,7 @@ function registerAttendee(req,res,next){
         return knex('attendee_tickets').insert({ticket_id: ticket_id, attendee_id: attendee.id})
       })
       .then((attendee) => {
-        console.log('ABOVE',attendee, attendeeOver21(attendee))
+        // console.log('ABOVE',attendee, attendeeOver21(attendee))
         attendee = attendee.length > 0 ? attendee : newAttendee
         console.log(attendee, attendeeOver21(attendee))
         return attendeeOver21(attendee) ? res.render('attendees/newAttendee',{attendee}) : res.render('events/eventRegistration',{error})
@@ -106,14 +105,18 @@ function registerAttendee(req,res,next){
 
 ///////// Utility Functions /////////
 function retreiveEventInformation(id){
-  return knex.select('tickets.name', 'tickets.price', 'events.id', 'events.title', 'events.description', 'events.start_datetime', 'events.end_datetime', 'events.over_21', 'venues.venue_name', 'venues.line_1', 'venues.city', 'venues.state', 'venues.zip')
+  return id ? retreivalCriterion().where('events.id',id).first() : retreivalCriterion()
+}
+
+function retreivalCriterion(){
+  return knex.select('tickets.name', 'tickets.price', 'events.id', 'events.title', 'events.description', 'events.start_datetime', 'events.end_datetime', 'events.over_21', 'events.venues_id', 'venues.venue_name', 'venues.capacity', 'venues.line_1', 'venues.city', 'venues.state', 'venues.zip')
     .from('tickets')
     .innerJoin('events', 'tickets.events_id', 'events.id')
     .innerJoin('venues', 'events.venues_id', 'venues.id')
-    .where('events.id',id).first()
 }
 
 function attendeeOver21(attendeeInfo){
+  console.log(attendeeInfo)
   const birthYear = parseInt(attendeeInfo.birthday.split('').slice(0,5).join(''))
   const currentYear = new Date().getFullYear()
   return (currentYear - birthYear < 21) ? false : true

@@ -5,12 +5,14 @@
     <title>{{event.title}}</title>
   </head>
   <body>
-    <h1>{{event.title}}</h1>
-    <h3>{{event.description}}</h3>
-    <p>Starting: {{event.start_datetime}}</p>
-    <p>Ending: {{event.end_datetime}}</p>
-    <p>Over 21: <strong>{{event.over_21}}</strong></p>
-    {{> googleMap}}
-    <p><a href="/events/{{event.id}}/attendees">See Event Attendees</a></p>
+    <div class="row">
+      <section class="col-md-4">
+        {{> eventInfo}}
+        <p><a href="/events/{{event.id}}/register">Register For This Event</a></p>
+      </section>
+      <section class="col-md-8">
+        {{> googleMap}}
+      </section>
+    </div>
   </body>
 </html>

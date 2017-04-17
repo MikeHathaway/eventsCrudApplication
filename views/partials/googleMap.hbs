@@ -11,10 +11,7 @@
   <body>
     <h3>Event Location</h3>
     <div id="map"></div>
-      {{event.line_1}}
-      {{event.city}}
-      {{event.state}}
-      <div id="zip">{{event.zip}}</div>
+    <p>{{event.line_1}} {{event.city}}, {{event.state}} {{event.zip}}</p>
 
     <script>
       function initMap() {
@@ -46,8 +43,3 @@
     </script>
   </body>
 </html>
-
-
-<!-- https://developers.google.com/maps/documentation/javascript/adding-a-google-map -->
-<!-- https://developers.google.com/maps/documentation/geocoding/intro -->
-<!-- https://developers.google.com/maps/documentation/javascript/examples/geocoding-simple -->

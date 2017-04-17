@@ -11,6 +11,7 @@
         <th>Event</th>
         <th>Description</th>
         <th>Venue</th>
+        <th>Capacity</th>
         <th>Starting</th>
         <th>Ending</th>
         <th>Over 21</th>
@@ -23,7 +24,8 @@
       <tr>
         <td><a href="events/{{this.id}}">{{this.title}}</a></td>
         <td>{{this.description}}</td>
-        <td><a href="../venues/{{this.venues_id}}">{{this.venues_id}}</a></td>
+        <td><a href="venues/{{this.venues_id}}">{{this.venue_name}}</a></td>
+        <td>{{this.capacity}}</td>
         <td>{{this.start_datetime}}</td>
         <td>{{this.end_datetime}}</td>
         <td>{{this.over_21}}</td>

@@ -5,18 +5,17 @@
     <title></title>
   </head>
   <body>
-    <section>
-      <h1>{{event.title}}</h1>
-      <p>{{event.description}}</p>
-      <p>{{event.start_datetime}}</p>
-      <p>{{event.line_1}}</p>
-      <p>{{event.city}}</p>
-      <p>{{event.state}}</p>
-      <p>Over 21: <strong>{{event.over_21}}</strong></p>
-    </section>
+    <div class="row">
+      <section class="col-md-3">
+        {{> eventInfo}}
+      </section>
+      <section class="col-md-9">
+        {{> googleMap}}
+      </section>
+    </div>
 
     <section>
-      <form action="/events/{{event.id}}/register" method="POST">
+      <form action="/events/{{event.id}}/register" method="POST" class="well">
         <label for="preferred_name">Preferred Name</label>
         <input id="preferred_name" class="form-control" type="text" name="preferred_name" required>
 
@@ -40,9 +39,9 @@
     </section>
 
       {{#if error}}
-        <section>
-          <p>{{error}}</p>
-        </section>
+        <div class="alert alert-danger">
+          {{error.message}}
+        </div>
       {{/if}}
   </body>
 </html>
