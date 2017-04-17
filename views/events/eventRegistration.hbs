@@ -5,43 +5,61 @@
     <title></title>
   </head>
   <body>
-    <div class="row">
-      <section class="col-md-3">
-        {{> eventInfo}}
+    <main class="container">
+      <div class="form-group row">
+        <section class="col-md-3">
+          {{> eventInfo}}
+        </section>
+        <section class="col-md-9">
+          {{> googleMap}}
+        </section>
+      </div>
+
+      <section class="row">
+        <form action="/events/{{event.id}}/register" method="POST" class="well">
+          <div class="form-group row">
+            <div class="col-md-6">
+              <label for="preferred_name">Preferred Name</label>
+              <input id="preferred_name" class="form-control" type="text" name="preferred_name" required>
+            </div>
+            <div class="col-md-6">
+              <label for="last_name">Last Name</label>
+              <input id="last_name" class="form-control" type="text" name="last_name" required>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="col-md-6">
+              <label for="birthday">Birthday</label>
+              <input id="birthday" class="form-control" type="date" name="birthday" required>
+            </div>
+            <div class="col-md-6">
+              <label for="email">Email</label>
+              <input id="email" class="form-control" type="text" name="email" required>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="col-md-3">
+              <label for="tickets">Tickets</label>
+              <select id="tickets" name="id">
+                {{#each event}}
+                  <option value="{{this.id}}">{{this.name}}: ${{this.price}}</option>
+                {{/each}}
+              </select>
+            </div>
+            <div class="col-md-3">
+              <button type="submit" class="btn btn-default">Register</button>
+            </div>
+          </div>
+        </form>
       </section>
-      <section class="col-md-9">
-        {{> googleMap}}
-      </section>
-    </div>
 
-    <section>
-      <form action="/events/{{event.id}}/register" method="POST" class="well">
-        <label for="preferred_name">Preferred Name</label>
-        <input id="preferred_name" class="form-control" type="text" name="preferred_name" required>
-
-        <label for="last_name">Last Name</label>
-        <input id="last_name" class="form-control" type="text" name="last_name" required>
-
-        <label for="birthday">Birthday</label>
-        <input id="birthday" class="form-control" type="date" name="birthday" required>
-
-        <label for="email">Email</label>
-        <input id="email" class="form-control" type="text" name="email" required>
-
-        <label for="tickets">Tickets</label>
-        <select id="tickets" name="id">
-          {{#each event}}
-            <option value="{{this.id}}">{{this.name}}: ${{this.price}}</option>
-          {{/each}}
-        </select>
-        <button type="submit" class="btn btn-default">Register</button>
-      </form>
-    </section>
-
-      {{#if error}}
-        <div class="alert alert-danger">
-          {{error.message}}
-        </div>
-      {{/if}}
+        {{#if error}}
+          <div class="alert alert-danger">
+            {{error.message}}
+          </div>
+        {{/if}}
+    </main>
   </body>
 </html>
